@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nexora_flashcard_app/doc_generation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +22,36 @@ class _HomeScreenState extends State<HomeScreen> {
         top:false,
         child: Container(
           color: Color.fromARGB(255,30,30,30),
-          child:Container(
+           child: Stack(
+            children: [
+              Positioned(
+                top: 50,
+                left: 10,
+                child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DocGenScreen()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 50, 50, 50),
+                        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 36),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        '+ New Deck',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+              ),
+
+            Container(
+              margin: EdgeInsets.only(top:120),
+              child : Container(
               margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.topCenter,
@@ -57,8 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           
         ),
-        
+            ]
+           )
       ),
+      )
       );
+    
   }
   }

@@ -2,20 +2,19 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const TopicGenScreen());
+  runApp(const DocGenScreen());
 }
 
-class TopicGenScreen extends StatefulWidget {
-  const TopicGenScreen({super.key});
+class DocGenScreen extends StatefulWidget {
+  const DocGenScreen({super.key});
   @override
-  State<TopicGenScreen> createState() => _TopicGenScreenState();
+  State<DocGenScreen> createState() => _DocGenScreenState();
 }
 
-class _TopicGenScreenState extends State<TopicGenScreen> {
+class _DocGenScreenState extends State<DocGenScreen> {
   final _genKey = GlobalKey<FormState>();
   final TextEditingController _topicController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-
 
   @override
   void initState() {
@@ -26,7 +25,7 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 25,25,25),
+      backgroundColor: const Color.fromARGB(255, 20,20,20),
       body:SafeArea(
         top: false,
         child: Container(
@@ -122,14 +121,16 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height:80)
+                    const SizedBox(height: 85),
+
                   ],
-                  ),
-             )
+          ),
+           )
             )
-            )
-        )
       )
-    );
+      )
+       )
+        );
+        
   }
-}
+  }
