@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:nexora_flashcard_app/splash_screen.dart';
+import 'package:nexora_flashcard_app/navigations.dart';
 import 'package:flutter/services.dart';
 
 
 void main() async{
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // Status bar
+    systemNavigationBarColor: Color.fromARGB(255, 25, 25, 25), // Nav bar
+    systemNavigationBarIconBrightness: Brightness.light, // Icon color
+    statusBarIconBrightness: Brightness.light,
+  ));
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
   [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],);
@@ -20,7 +27,7 @@ class MainApp extends StatelessWidget {
       title: "Nexora",
       debugShowCheckedModeBanner: false,
       theme:ThemeData(primaryColor: Colors.black),
-      home:SplashScreen(),
+      home:Navigations(),
       );
     
   }

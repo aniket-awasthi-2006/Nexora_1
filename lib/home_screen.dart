@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
             Container(
-              margin: EdgeInsets.only(top:120),
+              margin: EdgeInsets.only(top:30),
               child : Container(
               margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
               decoration: BoxDecoration(
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 borderRadius: BorderRadius.circular(20)),
               child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(5, 40, 5, 75), // bottom padding for overlap
+                padding: EdgeInsets.fromLTRB(5, 40, 5, 80), // bottom padding for overlap
                 child: Column(
                   children: List.generate(
                     50,

@@ -65,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'First Name',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your First Name',
-                        hintStyle: const TextStyle(color: Colors.white38),
+                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'Last Name',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your Last Name',
-                        hintStyle: const TextStyle(color: Colors.white38),
+                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'Email',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your email',
-                        hintStyle: const TextStyle(color: Colors.white38),
+                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -148,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'Password',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your password',
-                        hintStyle: const TextStyle(color: Colors.white38),
+                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -181,7 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'Re-type Password',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your password again',
-                        hintStyle: const TextStyle(color: Colors.white38),
+                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),

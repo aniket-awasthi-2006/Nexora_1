@@ -26,7 +26,7 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 25,25,25),
+      backgroundColor: const Color.fromARGB(255, 20, 20, 20),
       body:SafeArea(
         top: false,
         child: Container(
@@ -56,7 +56,7 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
                         labelText: 'Topic',
                         labelStyle: const TextStyle(color: Colors.white70,fontWeight:FontWeight.w700),
                         hintText: 'Enter your Topic ...',
-                        hintStyle: const TextStyle(color: Colors.white38),
+                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -81,7 +81,7 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
                         labelText: 'Description ...',
                         labelStyle: const TextStyle(color: Colors.white70,fontWeight:FontWeight.w700),
                         hintText: 'Enter some Description about your Topic ...',
-                        hintStyle: const TextStyle(color: Colors.white38),
+                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
