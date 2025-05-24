@@ -1,0 +1,1 @@
+const openAiApiKey="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";

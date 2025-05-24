@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:nexora_flashcard_app/keys.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'dart:async';
 
@@ -29,7 +28,7 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
   void initState() {
     super.initState();
      _openAI = OpenAI.instance.build(
-      token: openAiApiKey,
+      token: "",
       baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 30)),
       enableLog: true,
     );
