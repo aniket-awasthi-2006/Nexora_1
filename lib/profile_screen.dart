@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const ProgressScreen());
+  runApp(const ProfileScreen());
 }
 
-class ProgressScreen extends StatefulWidget {
-  const ProgressScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
   @override
-  State<ProgressScreen> createState() => _ProgressScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProgressScreenState extends State<ProgressScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();

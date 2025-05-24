@@ -46,7 +46,7 @@ class _DocGenScreenState extends State<DocGenScreen> {
                       height: 250,
                       width: 250,
                     ),
-                    const SizedBox(height: 20),
+                    
                     TextFormField(
                       controller: _topicController,
                       style: const TextStyle(color: Colors.white),
@@ -76,7 +76,7 @@ class _DocGenScreenState extends State<DocGenScreen> {
                       ),
                       keyboardType: TextInputType.text,
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 25),
                     TextFormField(
                       maxLines: null,
                       controller: _descriptionController,
@@ -107,7 +107,7 @@ class _DocGenScreenState extends State<DocGenScreen> {
                       ),
                       keyboardType: TextInputType.multiline,
                     ),
-                    const SizedBox(height: 35),
+                    const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () {
                         if (_genKey.currentState!.validate()) {
@@ -118,15 +118,16 @@ class _DocGenScreenState extends State<DocGenScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 40, 40, 40),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                       child: const Column(
+                        
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(8),
+                            padding: EdgeInsets.all(15),
                             child: Icon(
                             CupertinoIcons.doc_on_doc_fill,
                             size: 50,
@@ -143,7 +144,7 @@ class _DocGenScreenState extends State<DocGenScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 35),
+                    const SizedBox(height: 25),
                     ElevatedButton(
                       onPressed: () {
                         if (_genKey.currentState!.validate()) {
@@ -159,7 +160,17 @@ class _DocGenScreenState extends State<DocGenScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      child: const Text(
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(
+                            CupertinoIcons.wand_stars,
+                            size: 30,
+                            color: Colors.white,
+                          )),
+                          Text(
                         'Generate',
                         style: TextStyle(
                           fontSize: 18,
@@ -167,8 +178,10 @@ class _DocGenScreenState extends State<DocGenScreen> {
                           color: Colors.white,
                         ),
                       ),
+                        ]
+                      )
                     ),
-                    const SizedBox(height: 85),
+                    
                   ],
                 ),
               ),

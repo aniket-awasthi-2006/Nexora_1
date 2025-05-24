@@ -19,11 +19,11 @@ class Navigations extends StatefulWidget {
 }
 
 class _NavigationsState extends State<Navigations> {
-  int currentIndex = 0;
+  int currentIndex = 1;
 
   final List<Widget> screens = [
-    const HomeScreen(), 
     const TopicGenScreen(),
+    const HomeScreen(), 
     const ProgressScreen(),
   ];
 
@@ -36,6 +36,10 @@ class _NavigationsState extends State<Navigations> {
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[
+       Padding(
+        padding: EdgeInsets.all(8),
+        child: Icon(CupertinoIcons.sparkles, size: 25, color: Colors.white),
+      ),
       Padding(
         padding: EdgeInsets.all(8),
         child: Icon(
@@ -44,14 +48,11 @@ class _NavigationsState extends State<Navigations> {
           color: Colors.white,
         ),
       ),
-      Padding(
-        padding: EdgeInsets.all(8),
-        child: Icon(CupertinoIcons.sparkles, size: 25, color: Colors.white),
-      ),
-      Padding(
+     Padding(
         padding: EdgeInsets.all(8),
         child: Icon(Icons.leaderboard_rounded, size: 25, color: Colors.white),
       ),
+      
     ];
 
     return Scaffold(
