@@ -48,12 +48,12 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
 
 
     final request = ChatCompleteText(
-      model: GptTurbo0301ChatModel(), // Use GptTurbo for GPT-3.5/4
+      model:GptTurbo1106Model(),
       messages:[
         Map.of({
           "role": "user",
           "content": """
-Generate 30 flashcard-style questions (question + short answer) based on the following topic and description:
+Generate 30 flashcard-style questions (question + answer(50-70 words)) based on the following topic and description:
 
 Topic: $topic
 Description: $description
