@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'dart:async';
-
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nexora_flashcard_app/flashcard_storage.dart';
+import 'package:nexora_flashcard_app/navigations.dart';
 
 void main() {
   runApp(const TopicGenScreen());
@@ -19,21 +20,18 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
   final _genKey = GlobalKey<FormState>();
   final TextEditingController _topicController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  String _response = '';
   bool _loading = false;
   late OpenAI _openAI;
-
 
   @override
   void initState() {
     super.initState();
-     _openAI = OpenAI.instance.build(
-      token: "",
+    _openAI = OpenAI.instance.build(
+      token: dotenv.env['OPEN_AI_API_KEY'],
       baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 30)),
       enableLog: true,
     );
   }
-
 
   Future<void> generateFlashcards() async {
     final topic = _topicController.text;
@@ -43,13 +41,11 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
 
     setState(() {
       _loading = true;
-      _response = '';
     });
 
-
     final request = ChatCompleteText(
-      model:GptTurbo1106Model(),
-      messages:[
+      model: GptTurbo1106Model(),
+      messages: [
         Map.of({
           "role": "user",
           "content": """
@@ -62,28 +58,133 @@ Format:
 1. Question?
 Answer: ...
 2. ...
-"""
-        })
+""",
+        }),
       ],
-      maxToken: 3000,
+      maxToken: 20,
       temperature: 0.7,
     );
 
     try {
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _descriptionController.text = "";
+                    _topicController.text = "";
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Navigations()));
+                    
+                  },
+                  child: Text(
+                    'Go',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: Color.fromARGB(255, 155, 189, 255),
+                    ),
+                  ),
+                ),
+              ],
+              title: const Text(
+                "Success !",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 170, 170, 170),
+                ),
+              ),
+              contentPadding: EdgeInsets.all(20),
+              content: Text(
+                """The Deck of 30 cards are Generated & Stored 
+Please Move to the Collections Page""",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 140, 140, 140),
+                ),
+              ),
+              backgroundColor: Color.fromARGB(255, 25, 25, 25),
+            ),
+      );
+
       final result = await _openAI.onChatCompletion(request: request);
       final content = result?.choices.first.message?.content ?? 'No response';
+
       setState(() {
-        _response = content;
         _loading = false;
+      });
+
+      final List<Map<String, String>> flashcards = [];
+
+      final regex = RegExp(
+        r'\d+\.\s(.*?)\nAnswer:\s(.*?)(?=(\d+\.\s|$))',
+        dotAll: true,
+      );
+      final matches = regex.allMatches(content);
+
+      for (final match in matches) {
+        final question = match.group(1)?.trim();
+        final answer = match.group(2)?.trim();
+        if (question != null && answer != null) {
+          flashcards.add({"question": question, "answer": answer});
+        }
+      }
+
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = '${topic.toLowerCase().replaceAll(" ", "_")}_$timestamp';
+
+      final flashcardStorage = FlashcardStorage();
+      await flashcardStorage.saveFlashcardSet(fileName, {
+        "topic": topic,
+        "description": description,
+        "flashcards": flashcards,
       });
     } catch (e) {
       setState(() {
-        _response = 'Error: $e';
+        showDialog(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _descriptionController.text = "";
+                      _topicController.text = "";
+                    },
+                    child: Text(
+                      'OK',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        color: Color.fromARGB(255, 155, 189, 255),
+                      ),
+                    ),
+                  ),
+                ],
+                title: const Text(
+                  "Error !",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(255, 170, 170, 170),
+                  ),
+                ),
+                contentPadding: EdgeInsets.all(20),
+                content: Text(
+                  """Some thing Went Wrong !
+Please Try Again Later""",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(255, 140, 140, 140),
+                  ),
+                ),
+                backgroundColor: Color.fromARGB(255, 25, 25, 25),
+              ),
+        );
         _loading = false;
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -186,8 +287,7 @@ Answer: ...
                     ),
                     const SizedBox(height: 35),
                     ElevatedButton(
-                      onPressed:_loading ? null : generateFlashcards
-                      ,
+                      onPressed: _loading ? null : generateFlashcards,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 40, 40, 40),
                         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -195,10 +295,10 @@ Answer: ...
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(right: 5),
                             child: Icon(
                               CupertinoIcons.wand_stars,
@@ -207,20 +307,19 @@ Answer: ...
                             ),
                           ),
                           Text(
-                             'Generate',
-                            style: TextStyle(
+                            _loading ? 'Generating...' : 'Generate',
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w900,
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 20),
-                   ],
+                          const SizedBox(height: 20),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    SelectableText(_response)
-            
+
+                    const SizedBox(height: 80),
                   ],
                 ),
               ),

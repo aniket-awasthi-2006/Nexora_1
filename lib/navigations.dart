@@ -35,6 +35,7 @@ class _NavigationsState extends State<Navigations> {
 
   @override
   Widget build(BuildContext context) {
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     final items = <Widget>[
        Padding(
         padding: EdgeInsets.all(8),
@@ -69,7 +70,9 @@ class _NavigationsState extends State<Navigations> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: CurvedNavigationBar(
+              child: isKeyboardOpen
+          ? SizedBox.shrink()
+          : CurvedNavigationBar(
                 height: 63,
                 color: const Color.fromARGB(255, 25, 25, 25),
                 items: items,
