@@ -27,7 +27,7 @@ class _TopicGenScreenState extends State<TopicGenScreen> {
   void initState() {
     super.initState();
     _openAI = OpenAI.instance.build(
-      token: dotenv.env['OPEN_AI_API_KEY'],
+      token: '',
       baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 30)),
       enableLog: true,
     );
