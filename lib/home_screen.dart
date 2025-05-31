@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ), // bottom padding for overlap
 
           child: FutureBuilder<List<Map<String, dynamic>>>(
-          future: _flashcardSummaries,
+        future: _flashcardSummaries,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting){
               return Center(child: CircularProgressIndicator());
