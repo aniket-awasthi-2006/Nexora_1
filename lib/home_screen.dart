@@ -1,3 +1,5 @@
+//import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
+
 import 'package:flutter/material.dart';
 import 'package:nexora_flashcard_app/doc_generation.dart';
 import 'package:nexora_flashcard_app/profile_screen.dart';
@@ -10,13 +12,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Map<String, dynamic>>> _flashcardSummaries;  
+
+  final List<String> logos = [
+  'assets/images/cardLogo1.png',
+  'assets/images/cardLogo2.png',
+  'assets/images/cardLogo3.png',
+  'assets/images/cardLogo4.png',
+];
+  late Future<List<Map<String, dynamic>>> _flashcardSummaries;
   @override
   void initState() {
     super.initState();
     _flashcardSummaries = FlashcardStorage().getAllFlashcardSummaries();
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Positioned(
                 top: 50,
                 left: 10,
+                right: 10,
                 child: Row(
-                  spacing: 80,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -62,22 +70,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
+                    Spacer(),
                     InkWell(
                       child: CircleAvatar(
-                      radius: 26,
-                      backgroundImage: AssetImage(
-                        'assets/images/profile_default.jpg'
+                        radius: 26,
+                        backgroundImage: AssetImage(
+                          'assets/images/profile_default.jpg',
+                        ),
                       ),
-                    ),
-                    onTap: (){
-                     Navigator.push(
+                      onTap: () {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const ProfileScreen(),
                           ),
                         );
-                    },
-                    )
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -85,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 margin: EdgeInsets.only(top: 30),
                 child: Container(
+                  width: double.maxFinite,
                   margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -105,20 +115,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       80,
                     ), // bottom padding for overlap
 
-          child: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _flashcardSummaries,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator());
-            }
+                    child: FutureBuilder<List<Map<String, dynamic>>>(
+                      future: _flashcardSummaries,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
 
-            if (!snapshot.hasData || snapshot.data!.isEmpty){
-              return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(16),
-      height: 200,
-      width: 350,
-      decoration: BoxDecoration(
+                        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return Container(
+                            margin: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(16),
+                            height: 200,
+                            width: double.maxFinite,
+
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               gradient: LinearGradient(
                                 begin: Alignment.bottomLeft,
@@ -131,51 +143,85 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-      child: 
-          Text('No Stored Cards Found !', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold ,color: const Color.fromARGB(255, 140, 140, 140)))
-    );
-            }
-
-            return ListView.builder(
-  
-  physics: NeverScrollableScrollPhysics(), // Disable internal scroll
-  itemCount: snapshot.data!.length,
-  itemBuilder: (context, index) {
-    final set = snapshot.data![index];
-    return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(16),
-      height: 200,
-      decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                colors: <Color>[
-                                  Color.fromARGB(255, 0, 0, 0),
-                                  Color.fromARGB(255, 10, 10, 10),
-                                  Color.fromARGB(255, 20, 20, 20),
-                                  Color.fromARGB(255, 30, 30, 30),
-                                ],
+                            child: Text(
+                              'No Stored Cards Found !',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 140, 140, 140),
                               ),
                             ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(set['topic'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold ,color: const Color.fromARGB(255, 140, 140, 140))),
-          SizedBox(height: 6),
-          Text(set['description'] ?? '', style: TextStyle(color: const Color.fromARGB(255, 120, 120, 120))),
-        ],
-      ),
-    );
-  },
-);
-          },
-        ),
+                          );
+                        }
+
+                        return Column(
+                          children:
+                              snapshot.data!.map((set) {
+                                return Container(
+                                  margin: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(16),
+                                  height: 160,
+                                  width: double.maxFinite,
+
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight,
+                                      colors: <Color>[
+                                        Color.fromARGB(255, 0, 0, 0),
+                                        Color.fromARGB(255, 10, 10, 10),
+                                        Color.fromARGB(255, 20, 20, 20),
+                                        Color.fromARGB(255, 30, 30, 30),
+                                      ],
+                                    ),
+                                  ),
+                                  child: Row(
+                                    spacing: 30,
+                                    children: [
+                                      Image.asset(logos[snapshot.data!.indexOf(set) % logos.length],height: 120, width: 100,),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            set['topic'],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color.fromARGB(
+                                                255,
+                                                140,
+                                                140,
+                                                140,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 6),
+                                          Text(
+                                            set['description'] ?? '',
+                                            style: TextStyle(
+                                              color: const Color.fromARGB(
+                                                255,
+                                                120,
+                                                120,
+                                                120,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                        );
+                      },
+                    ),
                   ),
-                )
-              )
-            ]
+                ),
+              ),
+            ],
           ),
         ),
       ),

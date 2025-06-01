@@ -61,7 +61,7 @@ Answer: ...
 """,
         }),
       ],
-      maxToken: 20,
+      maxToken: 4000,
       temperature: 0.7,
     );
 
@@ -76,8 +76,10 @@ Answer: ...
                     Navigator.of(context).pop();
                     _descriptionController.text = "";
                     _topicController.text = "";
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Navigations()));
-                    
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Navigations()),
+                    );
                   },
                   child: Text(
                     'Go',
