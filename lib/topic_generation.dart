@@ -66,6 +66,40 @@ Answer: ...
     );
 
     try {
+      
+      final result = await _openAI.onChatCompletion(request: request);
+      final content = result?.choices.first.message?.content ?? 'No response';
+
+      setState(() {
+        _loading = false;
+      });
+
+      final List<Map<String, String>> flashcards = [];
+
+      final regex = RegExp(
+        r'\d+\.\s(.*?)\nAnswer:\s(.*?)(?=(\d+\.\s|$))',
+        dotAll: true,
+      );
+      final matches = regex.allMatches(content);
+
+      for (final match in matches) {
+        final question = match.group(1)?.trim();
+        final answer = match.group(2)?.trim();
+        if (question != null && answer != null) {
+          flashcards.add({"question": question, "answer": answer});
+        }
+      }
+
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = '${topic.toLowerCase().replaceAll(" ", "_")}_$timestamp';
+
+      final flashcardStorage = FlashcardStorage();
+      await flashcardStorage.saveFlashcardSet(fileName, {
+        "topic": topic,
+        "description": description,
+        "flashcards": flashcards,
+      });
+
       showDialog(
         context: context,
         builder:
@@ -109,39 +143,6 @@ Please Move to the Collections Page""",
               backgroundColor: Color.fromARGB(255, 25, 25, 25),
             ),
       );
-
-      final result = await _openAI.onChatCompletion(request: request);
-      final content = result?.choices.first.message?.content ?? 'No response';
-
-      setState(() {
-        _loading = false;
-      });
-
-      final List<Map<String, String>> flashcards = [];
-
-      final regex = RegExp(
-        r'\d+\.\s(.*?)\nAnswer:\s(.*?)(?=(\d+\.\s|$))',
-        dotAll: true,
-      );
-      final matches = regex.allMatches(content);
-
-      for (final match in matches) {
-        final question = match.group(1)?.trim();
-        final answer = match.group(2)?.trim();
-        if (question != null && answer != null) {
-          flashcards.add({"question": question, "answer": answer});
-        }
-      }
-
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final fileName = '${topic.toLowerCase().replaceAll(" ", "_")}_$timestamp';
-
-      final flashcardStorage = FlashcardStorage();
-      await flashcardStorage.saveFlashcardSet(fileName, {
-        "topic": topic,
-        "description": description,
-        "flashcards": flashcards,
-      });
     } catch (e) {
       setState(() {
         showDialog(

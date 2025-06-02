@@ -12,13 +12,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final List<String> logos = [
-  'assets/images/cardLogo1.png',
-  'assets/images/cardLogo2.png',
-  'assets/images/cardLogo3.png',
-  'assets/images/cardLogo4.png',
-];
+    'assets/images/cardLogo1.png',
+    'assets/images/cardLogo2.png',
+    'assets/images/cardLogo3.png',
+    'assets/images/cardLogo4.png',
+  ];
   late Future<List<Map<String, dynamic>>> _flashcardSummaries;
   @override
   void initState() {
@@ -136,10 +135,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
                                 colors: <Color>[
-                                  Color.fromARGB(255, 0, 0, 0),
-                                  Color.fromARGB(255, 10, 10, 10),
-                                  Color.fromARGB(255, 20, 20, 20),
+                                  Color.fromARGB(255, 50, 50, 50),
                                   Color.fromARGB(255, 30, 30, 30),
+                                  Color.fromARGB(255, 40, 40, 40),
+                                  Color.fromARGB(255, 50, 50, 50),
+                                  
                                 ],
                               ),
                             ),
@@ -169,7 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       begin: Alignment.bottomLeft,
                                       end: Alignment.topRight,
                                       colors: <Color>[
-                                        Color.fromARGB(255, 0, 0, 0),
                                         Color.fromARGB(255, 10, 10, 10),
                                         Color.fromARGB(255, 20, 20, 20),
                                         Color.fromARGB(255, 30, 30, 30),
@@ -179,37 +178,52 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Row(
                                     spacing: 30,
                                     children: [
-                                      Image.asset(logos[snapshot.data!.indexOf(set) % logos.length],height: 120, width: 100,),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            set['topic'],
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: const Color.fromARGB(
-                                                255,
-                                                140,
-                                                140,
-                                                140,
+                                      Image.asset(
+                                        logos[snapshot.data!.indexOf(set) %
+                                            logos.length],
+                                        height: 120,
+                                        width: 100,
+                                      ),
+
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+
+                                          children: [
+                                            Text(
+                                              set['topic'],
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: const Color.fromARGB(
+                                                  255,
+                                                  150,
+                                                  150,
+                                                  150,
+                                                ),
                                               ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                          ),
-                                          SizedBox(height: 6),
-                                          Text(
-                                            set['description'] ?? '',
-                                            style: TextStyle(
-                                              color: const Color.fromARGB(
-                                                255,
-                                                120,
-                                                120,
-                                                120,
+                                            SizedBox(height: 6),
+                                            Text(
+                                              set['description'] ?? '',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color.fromARGB(
+                                                  255,
+                                                  130,
+                                                  130,
+                                                  130,
+                                                ),
                                               ),
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
