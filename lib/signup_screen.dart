@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nexora_flashcard_app/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-
-void main() {
+void main() async {
+  await Firebase.initializeApp();
   runApp(const SignUpScreen());
 }
 
@@ -14,11 +16,146 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repasswordController = TextEditingController();
+
+
+  Future signUpWithEmail(String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      // Send email verification
+      await userCredential.user?.sendEmailVerification();
+
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _emailController.text = "";
+                    _passwordController.text = "";
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: Color.fromARGB(255, 155, 189, 255),
+                    ),
+                  ),
+                ),
+              ],
+              title: const Text(
+                "Verify Email",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 170, 170, 170),
+                ),
+              ),
+              contentPadding: EdgeInsets.all(20),
+              content: Text(
+                """Email Verification Link
+  Sent on you e-mail
+  Verify your e-mail before Login !!""",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 140, 140, 140),
+                ),
+              ),
+              backgroundColor: Color.fromARGB(255, 25, 25, 25),
+            ),
+      );
+    } on FirebaseAuthException {
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _emailController.text = "";
+                    _passwordController.text = "";
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: Color.fromARGB(255, 155, 189, 255),
+                    ),
+                  ),
+                ),
+              ],
+              title: const Text(
+                "Error !",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 170, 170, 170),
+                ),
+              ),
+              contentPadding: EdgeInsets.all(20),
+              content: Text(
+                """Either the email is already registered or the password is too weak.
+Please try again with a different email or a stronger password.""",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 140, 140, 140),
+                ),
+              ),
+              backgroundColor: Color.fromARGB(255, 25, 25, 25),
+            ),
+      );
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _emailController.text = "";
+                    _passwordController.text = "";
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: Color.fromARGB(255, 155, 189, 255),
+                    ),
+                  ),
+                ),
+              ],
+              title: const Text(
+                "Error !",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 170, 170, 170),
+                ),
+              ),
+              contentPadding: EdgeInsets.all(20),
+              content: Text(
+                """Some thing Went Wrong !
+Please Try Again.""",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 140, 140, 140),
+                ),
+              ),
+              backgroundColor: Color.fromARGB(255, 25, 25, 25),
+            ),
+      );
+    }
+  }
+  
 
   @override
   void dispose() {
@@ -59,61 +196,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 25),
                     TextFormField(
-                      controller: _firstNameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'First Name',
-                        labelStyle: const TextStyle(color: Colors.white70),
-                        hintText: 'Enter your First Name',
-                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white24),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white70),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                      ),
-                      keyboardType: TextInputType.name,
-                       ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _lastNameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'Last Name',
-                        labelStyle: const TextStyle(color: Colors.white70),
-                        hintText: 'Enter your Last Name',
-                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white24),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white70),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                      ),
-                      keyboardType: TextInputType.name,
-                       ),
-                    const SizedBox(height: 16),
-                    TextFormField(
                       controller: _emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: 'Email',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your email',
-                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
+                        hintStyle: const TextStyle(
+                          color: Colors.white38,
+                          fontWeight: FontWeight.w600,
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -148,7 +240,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'Password',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your password',
-                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
+                        hintStyle: const TextStyle(
+                          color: Colors.white38,
+                          fontWeight: FontWeight.w600,
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -181,7 +276,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'Re-type Password',
                         labelStyle: const TextStyle(color: Colors.white70),
                         hintText: 'Enter your password again',
-                        hintStyle: const TextStyle(color: Colors.white38,fontWeight:FontWeight.w600),
+                        hintStyle: const TextStyle(
+                          color: Colors.white38,
+                          fontWeight: FontWeight.w600,
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.white24),
@@ -211,7 +309,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Logging in...')),
+                            const SnackBar(content: Text('Signing Up...')),
+                            
+                          );
+                          signUpWithEmail(
+                            _emailController.text,
+                            _passwordController.text,
                           );
                         }
                       },
@@ -231,11 +334,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 20),
+                  
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
                       },
                       child: const Text(
                         'Sign In',

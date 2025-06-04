@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return Container(
                                   margin: EdgeInsets.all(10),
                                   padding: EdgeInsets.all(16),
-                                  height: 160,
+                                  height: 200,
                                   width: double.maxFinite,
 
                                   decoration: BoxDecoration(
@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Text(
                                               set['topic'],
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                                 color: const Color.fromARGB(
                                                   255,
@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
-                                            SizedBox(height: 6),
+                                            SizedBox(height: 4),
                                             Text(
                                               set['description'] ?? '',
                                               style: TextStyle(

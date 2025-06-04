@@ -61,7 +61,7 @@ Answer: ...
 """,
         }),
       ],
-      maxToken: 4000,
+      maxToken: 40,
       temperature: 0.7,
     );
 
@@ -188,6 +188,8 @@ Please Try Again Later""",
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
