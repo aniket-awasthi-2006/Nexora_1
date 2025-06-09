@@ -1,7 +1,7 @@
 //import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
-
 import 'package:flutter/material.dart';
 import 'package:nexora_flashcard_app/doc_generation.dart';
+import 'package:nexora_flashcard_app/flash_card_screen.dart';
 import 'package:nexora_flashcard_app/profile_screen.dart';
 import 'package:nexora_flashcard_app/flashcard_storage.dart';
 
@@ -95,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                   width: double.maxFinite,
                   margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                  padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -139,7 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Color.fromARGB(255, 30, 30, 30),
                                   Color.fromARGB(255, 40, 40, 40),
                                   Color.fromARGB(255, 50, 50, 50),
-                                  
                                 ],
                               ),
                             ),
@@ -155,77 +155,105 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         return Column(
+                          spacing: 20,
                           children:
                               snapshot.data!.map((set) {
-                                return Container(
-                                  margin: EdgeInsets.all(10),
-                                  padding: EdgeInsets.all(16),
-                                  height: 200,
-                                  width: double.maxFinite,
-
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomLeft,
-                                      end: Alignment.topRight,
-                                      colors: <Color>[
-                                        Color.fromARGB(255, 10, 10, 10),
-                                        Color.fromARGB(255, 20, 20, 20),
-                                        Color.fromARGB(255, 30, 30, 30),
-                                      ],
+                                return ElevatedButton(
+                                  onPressed: () {
+                                    final String fileAdd = set['fileAdd'] ?? '';
+                                    final String topic = set['topic'] ?? '';
+                                    final String description =
+                                        set['description'] ?? '';
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => FlashcardScreen(
+                                              topic: topic,
+                                              description: description,
+                                              fileAdd: fileAdd,
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    padding:
+                                        EdgeInsets
+                                            .zero, // Remove default padding
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
-                                  child: Row(
-                                    spacing: 30,
-                                    children: [
-                                      Image.asset(
-                                        logos[snapshot.data!.indexOf(set) %
-                                            logos.length],
-                                        height: 120,
-                                        width: 100,
+                                  child: Container(
+                                    padding: EdgeInsets.all(16),
+                                    height: 200,
+                                    width: double.maxFinite,
+
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: <Color>[
+                                          Color.fromARGB(255, 10, 10, 10),
+                                          Color.fromARGB(255, 20, 20, 20),
+                                          Color.fromARGB(255, 30, 30, 30),
+                                        ],
                                       ),
-
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-
-                                          children: [
-                                            Text(
-                                              set['topic'],
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: const Color.fromARGB(
-                                                  255,
-                                                  150,
-                                                  150,
-                                                  150,
-                                                ),
-                                              ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text(
-                                              set['description'] ?? '',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: const Color.fromARGB(
-                                                  255,
-                                                  130,
-                                                  130,
-                                                  130,
-                                                ),
-                                              ),
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
+                                    ),
+                                    child: Row(
+                                      spacing: 30,
+                                      children: [
+                                        Image.asset(
+                                          logos[snapshot.data!.indexOf(set) %
+                                              logos.length],
+                                          height: 120,
+                                          width: 100,
                                         ),
-                                      ),
-                                    ],
+
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+
+                                            children: [
+                                              Text(
+                                                set['topic'],
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: const Color.fromARGB(
+                                                    255,
+                                                    150,
+                                                    150,
+                                                    150,
+                                                  ),
+                                                ),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                set['description'] ?? '',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: const Color.fromARGB(
+                                                    255,
+                                                    130,
+                                                    130,
+                                                    130,
+                                                  ),
+                                                ),
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               }).toList(),

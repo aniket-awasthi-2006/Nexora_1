@@ -61,7 +61,7 @@ Answer: ...
 """,
         }),
       ],
-      maxToken: 40,
+      maxToken: 4000,
       temperature: 0.7,
     );
 
