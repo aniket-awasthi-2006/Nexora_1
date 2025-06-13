@@ -57,7 +57,7 @@ class _NavigationsState extends State<Navigations> {
     ];
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 25, 25, 25),
+      backgroundColor: const Color.fromARGB(255, 28, 28, 28),
       body: SafeArea(
         top: false,
         child: Stack(
@@ -74,7 +74,7 @@ class _NavigationsState extends State<Navigations> {
           ? SizedBox.shrink()
           : CurvedNavigationBar(
                 height: 63,
-                color: const Color.fromARGB(255, 25, 25, 25),
+                color: const Color.fromARGB(255, 28, 28, 28),
                 items: items,
                 index: currentIndex,
                 backgroundColor: Colors.transparent,

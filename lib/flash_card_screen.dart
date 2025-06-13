@@ -72,7 +72,6 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(parent: PageScrollPhysics()),
-                        ,
                         scrollDirection: Axis.vertical,
                         itemExtent: MediaQuery.of(context).size.height * 0.7,
                         itemCount: flashcards.length,

@@ -56,11 +56,13 @@ class _FlashCardItemState extends State<FlashCardItem> {
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
+                softWrap: true,    
+                maxLines: 10,                     
               ),
+              )
             ),
           ),
         ),
-      ),
     );
   }
 }
