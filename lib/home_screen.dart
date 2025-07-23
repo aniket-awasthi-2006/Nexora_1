@@ -166,13 +166,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                         set['description'] ?? '';
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => FlashcardScreen(
+                                      PageRouteBuilder(
+                                        pageBuilder:
+                                            (
+                                              context,
+                                              animation,
+                                              secAnimation,
+                                            ) => FlashcardScreen(
                                               topic: topic,
                                               description: description,
                                               fileAdd: fileAdd,
                                             ),
+                                        transitionDuration: Duration(
+                                          seconds: 1,
+                                        ),
+                                        transitionsBuilder: (
+                                          context,
+                                          animation,
+                                          secAnimation,
+                                          child,
+                                        ) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: const Offset(0.0, -1.0),
+                                              end: const Offset(0.0, 0.0),
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
                                       ),
                                     );
                                   },

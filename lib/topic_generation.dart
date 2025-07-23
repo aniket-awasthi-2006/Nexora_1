@@ -58,6 +58,12 @@ Format:
 1. Question?
 Answer: ...
 2. ...
+
+generate the questions in a way that they are clear, concise, and suitable for educational purposes. Each question should be followed by a detailed answer that provides enough context and information to understand the topic thoroughly.
+
+these questions should be diverse and cover different aspects of the topic, ensuring a comprehensive understanding. The answers should be informative and engaging, making them suitable for learners of various levels.
+
+these set should be heaving 30 questions with out any exceptions in the format mentioned above without any interruption or additional text.
 """,
         }),
       ],

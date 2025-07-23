@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'flash_card_item.dart';
+import 'package:shake/shake.dart';
 
 class FlashcardScreen extends StatefulWidget {
   final String? topic;
@@ -20,16 +21,63 @@ class FlashcardScreen extends StatefulWidget {
 }
 
 class _FlashcardScreenState extends State<FlashcardScreen> {
+  List<dynamic> flashcards = [];
+  int shakeCount = 0;
+  ShakeDetector? detector;
+
   @override
   void initState() {
     super.initState();
+    readAndSetFlashcards();
+
+    detector = ShakeDetector.autoStart(
+      onPhoneShake: (ShakeEvent event) {
+        shakeCount++;
+        if (shakeCount >= 2) {
+          shakeCount = 0;
+          shuffleFlashcards();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Flashcards shuffled!"),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+
+        // Reset shake count if 2 seconds pass without 3 shakes
+        Future.delayed(const Duration(seconds: 2), () {
+          shakeCount = 0;
+        });
+      },
+    );
   }
 
-  readJsonFile() async {
-    final file = File(widget.fileAdd ?? '');
-    String contents = await file.readAsString();
-    final data = jsonDecode(contents);
-    return data['flashcards'] ?? [];
+  Future<void> readAndSetFlashcards() async {
+    try {
+      final file = File(widget.fileAdd ?? '');
+      String contents = await file.readAsString();
+      final data = jsonDecode(contents);
+      setState(() {
+        flashcards = data['flashcards'] ?? [];
+      });
+    } catch (e) {
+      setState(() {
+        flashcards = [];
+      });
+      debugPrint("Error reading JSON: $e");
+    }
+  }
+
+  void shuffleFlashcards() {
+    setState(() {
+      flashcards.shuffle();
+    });
+  }
+
+  @override
+  void dispose() {
+    detector?.stopListening();
+    super.dispose();
   }
 
   @override
@@ -57,27 +105,18 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                 style: const TextStyle(color: Colors.white70, fontSize: 18),
               ),
               const SizedBox(height: 30),
-              FutureBuilder<dynamic>(
-                future: readJsonFile(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('No flashcards available');
-                  } else {
-                    final flashcards = snapshot.data!;
-                    return Expanded(
-                      
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(parent: PageScrollPhysics()),
+              flashcards.isEmpty
+                  ? const CircularProgressIndicator()
+                  : Expanded(
+                      child: PageView.builder(
+                        physics: const ClampingScrollPhysics(),
+                        controller: PageController(viewportFraction: 0.95),
                         scrollDirection: Axis.vertical,
-                        itemExtent: MediaQuery.of(context).size.height * 0.7,
                         itemCount: flashcards.length,
-                        shrinkWrap: true, 
+                        pageSnapping: true,
+                        allowImplicitScrolling: true,
+                        padEnds: false,
                         itemBuilder: (context, index) {
-                        
                           final flashcard = flashcards[index];
                           return FlashCardItem(
                             question: flashcard['question'] ?? 'No question',
@@ -85,10 +124,22 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                           );
                         },
                       ),
-                    );
-                  }
-                },
-              ),
+                    ),
+                    Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 10,
+                    children: [
+                    Icon(Icons.multiple_stop_rounded, color: Color.fromARGB(255, 0, 166, 255), size: 30),
+                    Text(
+                      "Shake Shuffle's Flashcards",
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 166, 255),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                      ),
+                    ),]
+                    )
+
             ],
           ),
         ),
