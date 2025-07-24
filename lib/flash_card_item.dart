@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:nexora_flashcard_app/answer_checker_screen.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 
 
@@ -100,9 +101,10 @@ class _FlashCardItemState extends State<FlashCardItem> {
                       color: Color.fromARGB(255, 180, 180, 180),
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
+                      
                     ),
                     softWrap: true,
-                    maxLines: 15,
+                    maxLines: 12,
                   ),
                 ),
               ],
@@ -122,9 +124,12 @@ class _FlashCardItemState extends State<FlashCardItem> {
               ),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Stack(
+            child: Column(
+              
               children: [
-                IconButton(
+                Container(
+                alignment: Alignment.topLeft,
+                child :IconButton(
                   icon: const Icon(
                     Icons.volume_up,
                     color: Colors.white,
@@ -132,8 +137,10 @@ class _FlashCardItemState extends State<FlashCardItem> {
                   ),
                   onPressed: () => textSpeak(widget.answer),
                 ),
-                Center(
-                  child: Text(
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: AutoSizeText(
                     widget.answer,
                     style: const TextStyle(
                       color: Color.fromARGB(255, 180, 180, 180),
@@ -141,7 +148,7 @@ class _FlashCardItemState extends State<FlashCardItem> {
                       fontWeight: FontWeight.w600,
                     ),
                     softWrap: true,
-                    maxLines: 15,
+                    maxLines: 12,
                   ),
                 ),
               ],

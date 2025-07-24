@@ -3,6 +3,9 @@ import 'dart:io';
 import 'dart:convert';
 import 'flash_card_item.dart';
 import 'package:shake/shake.dart';
+import 'package:sound_library/sound_library.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:vibration/vibration.dart';
 
 class FlashcardScreen extends StatefulWidget {
   final String? topic;
@@ -38,7 +41,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           shuffleFlashcards();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Flashcards shuffled!"),
+              content: Text("Flashcards shuffling!"),
               duration: Duration(seconds: 1),
             ),
           );
@@ -68,7 +71,9 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     }
   }
 
-  void shuffleFlashcards() {
+  void shuffleFlashcards() async {
+    await SoundPlayer.play(Sounds.welcome, volume: 0.5);
+    Vibration.vibrate(duration: 1000);
     setState(() {
       flashcards.shuffle();
     });
@@ -82,6 +87,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AudioPlayer audioPlayer = AudioPlayer();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 20, 20, 20),
       body: SafeArea(
@@ -107,8 +113,13 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               const SizedBox(height: 30),
               flashcards.isEmpty
                   ? const CircularProgressIndicator()
-                  : Expanded(
+                  :  Expanded(
                       child: PageView.builder(
+                        onPageChanged: (index) {
+                          audioPlayer.stop();
+                          audioPlayer.setAsset('assets/audio/swip.mp3');
+                          audioPlayer.play();
+                        },
                         physics: const ClampingScrollPhysics(),
                         controller: PageController(viewportFraction: 0.95),
                         scrollDirection: Axis.vertical,
@@ -125,21 +136,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                         },
                       ),
                     ),
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 10,
-                    children: [
-                    Icon(Icons.multiple_stop_rounded, color: Color.fromARGB(255, 0, 166, 255), size: 30),
-                    Text(
-                      "Shake Shuffle's Flashcards",
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 166, 255),
-                        fontWeight: FontWeight.w900,
-                        fontSize: 16,
-                      ),
-                    ),]
-                    )
-
+                  
             ],
           ),
         ),
