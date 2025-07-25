@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+
 import 'dart:convert';
 import 'flash_card_item.dart';
 import 'package:shake/shake.dart';
@@ -58,6 +59,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   Future<void> readAndSetFlashcards() async {
     try {
       final file = File(widget.fileAdd ?? '');
+      
       String contents = await file.readAsString();
       final data = jsonDecode(contents);
       setState(() {
